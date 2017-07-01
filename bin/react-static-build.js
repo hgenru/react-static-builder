@@ -30,13 +30,14 @@ function getStaticBuilderEntry(stats) {
 
 function renderPages(buildDirectory, urls, renderer) {
     urls.forEach((url) => {
-        const renderedFilePath = renderPath({
+        renderPath({
             dir: buildDirectory,
             renderer,
             url
+        }).then((renderedFilePath) => {
+            const relativeRenderedFilePath = path.relative(process.cwd(), renderedFilePath);
+            printf(`Render ${colors.green(url)} to ${colors.green(relativeRenderedFilePath)}`);
         });
-        const relativeRenderedFilePath = path.relative(process.cwd(), renderedFilePath);
-        printf(`Render ${colors.green(url)} to ${colors.green(relativeRenderedFilePath)}`);
     });
 }
 
