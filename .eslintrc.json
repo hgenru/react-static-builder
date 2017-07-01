@@ -1,0 +1,15 @@
+{
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "extends": ["eslint:recommended", "google"],
+  "rules": {
+    "max-len": ["error", 120],
+    "require-jsdoc": "off",
+    "comma-dangle": ["error", "never"]
+  }
+}
