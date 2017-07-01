@@ -27,12 +27,11 @@ function getServerWebpackConfig(getWebpackConfig) {
  * @return {Object} webpackConfig
  */
 function getClientWebpackConfig(getWebpackConfig) {
-    return _.merge(getWebpackConfig(), {
-        name: 'clientBundle',
-        entry: {
-            staticBuilderEntry: undefined
-        }
+    const config = _.merge(getWebpackConfig(), {
+        name: 'clientBundle'
     });
+    config.entry = _.omit(config.entry, ['staticBuilderEntry']);
+    return config;
 }
 
 module.exports = {getServerWebpackConfig, getClientWebpackConfig};

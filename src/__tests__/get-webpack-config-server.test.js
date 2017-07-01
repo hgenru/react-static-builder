@@ -4,7 +4,7 @@ const {getServerWebpackConfig} = require('../get-webpack-config');
 
 test(`should return obect from passed function`, () => {
     const serverWebpackConfig = getServerWebpackConfig(getWebpackConfig);
-    expect(serverWebpackConfig.entry).toBe('./foo.js');
+    expect(serverWebpackConfig.entry.index).toBe('./foo.js');
 });
 
 test('should throw error when webpack config doesn\'t have output.path', () => {
