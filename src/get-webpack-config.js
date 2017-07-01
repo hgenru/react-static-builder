@@ -28,7 +28,10 @@ function getServerWebpackConfig(getWebpackConfig) {
  */
 function getClientWebpackConfig(getWebpackConfig) {
     return _.merge(getWebpackConfig(), {
-        name: 'clientBundle'
+        name: 'clientBundle',
+        entry: {
+            staticBuilderEntry: undefined
+        }
     });
 }
 

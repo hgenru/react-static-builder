@@ -20,14 +20,6 @@ function throwError(errorMessage) {
     process.exit(1);
 }
 
-function getStaticBuilderEntry(stats) {
-    const staticBuilderEntry = _.get(stats, 'assetsByChunkName.staticBuilderEntry');
-    if (_.isEmpty(staticBuilderEntry)) {
-        throwError('Webpack config should contain entry.staticBuilderEntry');
-    }
-    return staticBuilderEntry;
-}
-
 function renderPages(buildDirectory, urls, renderer) {
     urls.forEach((url) => {
         renderPath({
@@ -70,8 +62,7 @@ function main() {
     compiler.run((err, stats) => {
         const statsObject = stats.toJson();
         const serverBundleStats = statsObject.children.find((stat) => stat.name === 'serverBundle');
-        const staticBuilderEntry = getStaticBuilderEntry(serverBundleStats);
-        const staticBuilderScript = require(path.join(builderTempOutputDirectory, staticBuilderEntry));
+        const staticBuilderScript = require(path.join(builderTempOutputDirectory, 'static-build.js'));
         validateStaticBuildEntry(staticBuilderScript);
         const {urls, renderer} = staticBuilderScript.default;
         renderPages(buildDirectory, urls, renderer);
