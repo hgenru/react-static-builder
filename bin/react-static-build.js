@@ -21,7 +21,7 @@ function throwError(errorMessage) {
 }
 
 function renderPages(buildDirectory, urls, renderer) {
-    urls.forEach((url) => {
+    const renders = urls.map((url) =>
         renderPath({
             dir: buildDirectory,
             renderer,
@@ -29,8 +29,11 @@ function renderPages(buildDirectory, urls, renderer) {
         }).then((renderedFilePath) => {
             const relativeRenderedFilePath = path.relative(process.cwd(), renderedFilePath);
             printf(`Render ${colors.green(url)} to ${colors.green(relativeRenderedFilePath)}`);
-        });
-    });
+        }).catch(
+            (err) => console.error(err)
+        )
+    );
+    return Promise.all(renders);
 }
 
 function main() {
@@ -60,14 +63,13 @@ function main() {
 
     const compiler = webpack([clientWebpackConfig, serverWebpackConfig]);
     compiler.run((err, stats) => {
-        const statsObject = stats.toJson();
-        const serverBundleStats = statsObject.children.find((stat) => stat.name === 'serverBundle');
         const staticBuilderScript = require(path.join(builderTempOutputDirectory, 'static-build.js'));
         validateStaticBuildEntry(staticBuilderScript);
         const {urls, renderer} = staticBuilderScript.default;
-        renderPages(buildDirectory, urls, renderer);
-        printf(`Remove temp directory ${colors.green(builderTempOutputDirectory)}`);
-        fs.removeSync(builderTempOutputDirectory);
+        renderPages(buildDirectory, urls, renderer).then(() => {
+            printf(`Remove temp directory ${colors.green(builderTempOutputDirectory)}`);
+            fs.removeSync(builderTempOutputDirectory);
+        });
     });
 }
 
