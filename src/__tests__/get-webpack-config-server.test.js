@@ -38,3 +38,13 @@ test(`should setup output filename`, () => {
     const serverWebpackConfig = getServerWebpackConfig(getWebpackConfig);
     expect(serverWebpackConfig.output.filename).toBe('static-build.js');
 });
+
+test(`should pass isServerBundle to webpack config funcion`, () => {
+    expect.assertions(1);
+    const getConfig = ({staticBuilderEnv}) => {
+        expect(staticBuilderEnv).toBe('server');
+    };
+    try {
+        getServerWebpackConfig(getConfig);
+    } catch (err) {}
+});

@@ -15,3 +15,13 @@ test('should delete entry.staticBuilderEntry from client config', () => {
     const clientWebpackConfig = getClientWebpackConfig(getWebpackConfig);
     expect(clientWebpackConfig.entry.staticBuilderEntry).toBeUndefined();
 });
+
+test(`should pass isServerBundle to webpack config funcion`, () => {
+    expect.assertions(1);
+    const getConfig = ({staticBuilderEnv}) => {
+        expect(staticBuilderEnv).toBe('client');
+    };
+    try {
+        getClientWebpackConfig(getConfig);
+    } catch (err) {}
+});

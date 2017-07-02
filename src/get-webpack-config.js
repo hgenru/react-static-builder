@@ -6,7 +6,7 @@ const path = require('path');
  * @return {Object} webpackConfig
  */
 function getServerWebpackConfig(getWebpackConfig) {
-    const originalConfig = getWebpackConfig();
+    const originalConfig = getWebpackConfig({staticBuilderEnv: 'server'});
     const originalConfigOutputPath = _.get(originalConfig, 'output.path');
     if (_.isEmpty(originalConfigOutputPath)) {
          throw new Error('Webpack config should contain output.path');
@@ -27,7 +27,7 @@ function getServerWebpackConfig(getWebpackConfig) {
  * @return {Object} webpackConfig
  */
 function getClientWebpackConfig(getWebpackConfig) {
-    const config = _.merge(getWebpackConfig(), {
+    const config = _.merge(getWebpackConfig({staticBuilderEnv: 'client'}), {
         name: 'clientBundle'
     });
     config.entry = _.omit(config.entry, ['staticBuilderEntry']);
